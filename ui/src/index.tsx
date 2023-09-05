@@ -38,13 +38,13 @@ export const Extension = (props: {
         <div>
           <TimeSeriesChart data={fetchChartData(metric.measurements)} series={["value"]} />
         </div>
-        {props.resource.spec.metrics?.filter((m: { name: string; }) => m.name == metric.name).map((metricSpec: { provider: { job: any; datadog: { query: string; interval: string; }; }; successCondition: string; }) =>
+        {props.resource.spec.metrics?.filter((m: { name: string; }) => m.name == metric.name).map((metricSpec: { interval: string, provider: { job: any; datadog: { query: string; interval: string; }; }; successCondition: string; }) =>
           <details>
             <summary>Details</summary>
             {metricSpec.provider.datadog?.query &&
               <>
                 <b>Interval</b>
-                <pre>{renderArgs(props.resource.spec.args || [], metricSpec.provider.datadog.interval)}</pre>
+                <pre>{renderArgs(props.resource.spec.args || [], metricSpec.provider.datadog.interval || metricSpec.interval)}</pre>
                 <b>Query</b>
                 <pre>{renderArgs(props.resource.spec.args || [], metricSpec.provider.datadog.query)}</pre>
                 <b>Success Condition</b>

@@ -14,86 +14,375 @@
     <div id="root"></div>
     <script>
         var resource = {
-            "spec": {
-                "args": [
-                    {
-                        "name": "service-name",
-                        "value": "myservice"
-                    },
-                    {
-                        "name": "version",
-                        "value": "v42"
-                    },
-                    {
-                        "name": "time-window",
-                        "value": "300"
-                    },
-                    {
-                        "name": "limit-4xx",
-                        "value": "0"
-                    }
-                ],
-                "metrics": [
-                    {
-                        "name": "smoketest",
-                        "provider": {
-                            "job": {}
-                        }
-                    },
-                    {
-                        "name": "4xx-count",
-                        "provider": {
-                            "datadog": {
-                                "interval": "{{args.time-window}}s",
-                                "query": "sum:istio.mesh.request.count.total{version:{{args.version}}}"
-                            }
-                        },
-                        "successCondition": "default(result, 0) <= {{args.limit-4xx}}"
-                    }
-                ]
-            },
-            "status": {
-                "dryRunSummary": {}, "message": "Run Terminated",
-                "metricResults": [
-                    {
-                        "count": 1, "measurements": [
-                            {
-                                "finishedAt": "2022-12-07T11:37:14Z", "phase": "Successful", "startedAt": "2022-12-07T11:37:14Z", "value": "1",
-                                "metadata": { "job-name": "59c792ae-68fb-45d1-af15-074783c2f233.smoketest.1" },
-                            },
-                        ], "name": "smoketest", "phase": "Successful", "successful": 1
-                    },
-                    {
-                        "count": 20, "measurements": [
-                            { "finishedAt": "2022-12-07T11:37:14Z", "phase": "Successful", "startedAt": "2022-12-07T11:37:14Z", "value": "0" },
-                            { "finishedAt": "2022-12-07T11:37:44Z", "phase": "Successful", "startedAt": "2022-12-07T11:37:44Z", "value": "[]" },
-                            { "finishedAt": "2022-12-07T11:38:14Z", "phase": "Successful", "startedAt": "2022-12-07T11:38:14Z", "value": "0" },
-                            { "finishedAt": "2022-12-07T11:38:44Z", "phase": "Successful", "startedAt": "2022-12-07T11:38:44Z", "value": "[]" },
-                            { "finishedAt": "2022-12-07T11:39:14Z", "phase": "Successful", "startedAt": "2022-12-07T11:39:14Z", "value": "[]" },
-                            { "finishedAt": "2022-12-07T11:39:44Z", "phase": "Successful", "startedAt": "2022-12-07T11:39:44Z", "value": "[]" },
-                            { "finishedAt": "2022-12-07T11:40:14Z", "phase": "Successful", "startedAt": "2022-12-07T11:40:14Z", "value": "[]" },
-                            { "finishedAt": "2022-12-07T11:40:44Z", "phase": "Successful", "startedAt": "2022-12-07T11:40:44Z", "value": "[]" },
-                            { "finishedAt": "2022-12-07T11:41:14Z", "phase": "Failed", "startedAt": "2022-12-07T11:41:14Z", "value": "3" },
-                            { "finishedAt": "2022-12-07T11:41:44Z", "phase": "Successful", "startedAt": "2022-12-07T11:41:44Z", "value": "[]" }
-                        ], "name": "4xx-count", "phase": "Successful", "successful": 20
-                    },
-                    {
-                        "count": 20, "measurements": [
-                            { "finishedAt": "2022-12-07T11:37:14Z", "phase": "Successful", "startedAt": "2022-12-07T11:37:14Z", "value": "1" },
-                            { "finishedAt": "2022-12-07T11:37:44Z", "phase": "Successful", "startedAt": "2022-12-07T11:37:44Z", "value": "1" },
-                            { "finishedAt": "2022-12-07T11:38:14Z", "phase": "Successful", "startedAt": "2022-12-07T11:38:14Z", "value": "-1" },
-                            { "finishedAt": "2022-12-07T11:38:44Z", "phase": "Successful", "startedAt": "2022-12-07T11:38:44Z", "value": "[]" },
-                            { "finishedAt": "2022-12-07T11:39:14Z", "phase": "Successful", "startedAt": "2022-12-07T11:39:14Z", "value": "[]" },
-                            { "finishedAt": "2022-12-07T11:39:44Z", "phase": "Failed", "startedAt": "2022-12-07T11:39:44Z", "value": "2" },
-                            { "finishedAt": "2022-12-07T11:40:14Z", "phase": "Successful", "startedAt": "2022-12-07T11:40:14Z", "value": "[]" },
-                            { "finishedAt": "2022-12-07T11:40:44Z", "phase": "Successful", "startedAt": "2022-12-07T11:40:44Z", "value": "[]" },
-                            { "finishedAt": "2022-12-07T11:41:14Z", "phase": "Inconclusive", "startedAt": "2022-12-07T11:41:14Z", "value": "0" },
-                            { "finishedAt": "2022-12-07T11:41:44Z", "phase": "Failed", "startedAt": "2022-12-07T11:41:44Z", "value": "3" }
-                        ], "name": "error-rate", "phase": "Successful", "successful": 20
-                    }
-                ], "phase": "Successful", "runSummary": { "count": 2, "successful": 2 }, "startedAt": "2022-12-07T11:32:14Z"
-            }
-        };
+  "apiVersion": "argoproj.io/v1alpha1",
+  "kind": "AnalysisRun",
+  "metadata": {
+    "annotations": {
+      "rollout.argoproj.io/revision": "336"
+    },
+    "creationTimestamp": "2023-08-30T20:22:20Z",
+    "generation": 13,
+    "labels": {
+      "rollout-type": "Background",
+      "rollouts-pod-template-hash": "7b457c5d5d"
+    },
+    "name": "web-7b457c5d5d-336.4",
+    "namespace": "default",
+    "ownerReferences": [
+      {
+        "apiVersion": "argoproj.io/v1alpha1",
+        "blockOwnerDeletion": true,
+        "controller": true,
+        "kind": "Rollout",
+        "name": "web",
+        "uid": "bf639550-fb22-493a-9c16-d9633a7ea77b"
+      }
+    ],
+    "resourceVersion": "227185360",
+    "uid": "2c703cf5-d9a4-4163-be01-2da672cdd7d7"
+  },
+  "spec": {
+    "args": [
+      {
+        "name": "stablehash",
+        "value": "c5f6f8656"
+      },
+      {
+        "name": "latesthash",
+        "value": "7b457c5d5d"
+      }
+    ],
+    "metrics": [
+      {
+        "failureLimit": 5,
+        "interval": "1m",
+        "name": "cpu",
+        "provider": {
+          "datadog": {
+            "query": "clamp_min(sum:kubernetes.cpu.usage.total{rollouts-pod-template-hash:{{args.latesthash}}}, 1000000000) /\nclamp_min(sum:kubernetes.cpu.usage.total{rollouts-pod-template-hash:{{args.stablehash}}}, 1000000000)\n"
+          }
+        },
+        "successCondition": "default(result, 0) <= 1.1"
+      },
+      {
+        "failureLimit": 5,
+        "interval": "1m",
+        "name": "error-rate",
+        "provider": {
+          "datadog": {
+            "query": "(sum:it.service.hits{rollouts-pod-template-hash:{{args.latest-hash}}} /\nsum:it.service.errors{rollouts-pod-template-hash:{{args.latest-hash}}}) /\n(sum:it.service.hits{rollouts-pod-template-hash:{{args.stable-hash}}} /\nsum:it.service.errors{rollouts-pod-template-hash:{{args.stable-hash}}})\n"
+          }
+        },
+        "successCondition": "default(result, 0) <= 1.1"
+      },
+      {
+        "failureLimit": 5,
+        "interval": "1m",
+        "name": "latency",
+        "provider": {
+          "datadog": {
+            "query": "clamp_min(p90:it.service.duration{rollouts-pod-template-hash:{{args.latest-hash}}}, 20000000) /\nclamp_min(p90:it.service.duration{rollouts-pod-template-hash:{{args.stable-hash}}}, 20000000)\n"
+          }
+        },
+        "successCondition": "default(result, 0) <= 1.1"
+      },
+      {
+        "failureLimit": 5,
+        "interval": "1m",
+        "name": "memory",
+        "provider": {
+          "datadog": {
+            "query": "avg:kubernetes.memory.usage_pct{rollouts-pod-template-hash:{{args.latest-hash}}} /\navg:kubernetes.memory.usage_pct{rollouts-pod-template-hash:{{args.stable-hash}}}\n"
+          }
+        },
+        "successCondition": "default(result, 0) <= 1.1"
+      }
+    ]
+    },
+    "status": {
+    "dryRunSummary": {},
+    "metricResults": [
+      {
+        "count": 12,
+        "measurements": [
+          {
+            "finishedAt": "2023-08-30T20:24:21Z",
+            "phase": "Successful",
+            "startedAt": "2023-08-30T20:24:21Z",
+            "value": "1"
+          },
+          {
+            "finishedAt": "2023-08-30T20:25:21Z",
+            "phase": "Successful",
+            "startedAt": "2023-08-30T20:25:21Z",
+            "value": "1"
+          },
+          {
+            "finishedAt": "2023-08-30T20:26:21Z",
+            "phase": "Successful",
+            "startedAt": "2023-08-30T20:26:21Z",
+            "value": "1"
+          },
+          {
+            "finishedAt": "2023-08-30T20:27:21Z",
+            "phase": "Successful",
+            "startedAt": "2023-08-30T20:27:21Z",
+            "value": "1"
+          },
+          {
+            "finishedAt": "2023-08-30T20:28:21Z",
+            "phase": "Successful",
+            "startedAt": "2023-08-30T20:28:21Z",
+            "value": "1"
+          },
+          {
+            "finishedAt": "2023-08-30T20:29:21Z",
+            "phase": "Successful",
+            "startedAt": "2023-08-30T20:29:21Z",
+            "value": "1"
+          },
+          {
+            "finishedAt": "2023-08-30T20:30:21Z",
+            "phase": "Successful",
+            "startedAt": "2023-08-30T20:30:21Z",
+            "value": "1"
+          },
+          {
+            "finishedAt": "2023-08-30T20:31:21Z",
+            "phase": "Successful",
+            "startedAt": "2023-08-30T20:31:21Z",
+            "value": "1"
+          },
+          {
+            "finishedAt": "2023-08-30T20:32:21Z",
+            "phase": "Successful",
+            "startedAt": "2023-08-30T20:32:21Z",
+            "value": "1"
+          },
+          {
+            "finishedAt": "2023-08-30T20:33:21Z",
+            "phase": "Successful",
+            "startedAt": "2023-08-30T20:33:21Z",
+            "value": "1"
+          }
+        ],
+        "name": "cpu",
+        "phase": "Running",
+        "successful": 12
+      },
+      {
+        "count": 12,
+        "measurements": [
+          {
+            "finishedAt": "2023-08-30T20:24:21Z",
+            "phase": "Successful",
+            "startedAt": "2023-08-30T20:24:21Z",
+            "value": "0"
+          },
+          {
+            "finishedAt": "2023-08-30T20:25:21Z",
+            "phase": "Successful",
+            "startedAt": "2023-08-30T20:25:21Z",
+            "value": "0"
+          },
+          {
+            "finishedAt": "2023-08-30T20:26:21Z",
+            "phase": "Successful",
+            "startedAt": "2023-08-30T20:26:21Z",
+            "value": "0"
+          },
+          {
+            "finishedAt": "2023-08-30T20:27:21Z",
+            "phase": "Successful",
+            "startedAt": "2023-08-30T20:27:21Z",
+            "value": "0"
+          },
+          {
+            "finishedAt": "2023-08-30T20:28:21Z",
+            "phase": "Successful",
+            "startedAt": "2023-08-30T20:28:21Z",
+            "value": "0"
+          },
+          {
+            "finishedAt": "2023-08-30T20:29:21Z",
+            "phase": "Successful",
+            "startedAt": "2023-08-30T20:29:21Z",
+            "value": "0"
+          },
+          {
+            "finishedAt": "2023-08-30T20:30:21Z",
+            "phase": "Successful",
+            "startedAt": "2023-08-30T20:30:21Z",
+            "value": "0"
+          },
+          {
+            "finishedAt": "2023-08-30T20:31:21Z",
+            "phase": "Successful",
+            "startedAt": "2023-08-30T20:31:21Z",
+            "value": "0"
+          },
+          {
+            "finishedAt": "2023-08-30T20:32:21Z",
+            "phase": "Successful",
+            "startedAt": "2023-08-30T20:32:21Z",
+            "value": "0"
+          },
+          {
+            "finishedAt": "2023-08-30T20:33:21Z",
+            "phase": "Successful",
+            "startedAt": "2023-08-30T20:33:21Z",
+            "value": "0"
+          }
+        ],
+        "name": "error-rate",
+        "phase": "Running",
+        "successful": 12
+      },
+      {
+        "count": 12,
+        "measurements": [
+          {
+            "finishedAt": "2023-08-30T20:24:21Z",
+            "phase": "Successful",
+            "startedAt": "2023-08-30T20:24:21Z",
+            "value": "0.13388024455473904"
+          },
+          {
+            "finishedAt": "2023-08-30T20:25:21Z",
+            "phase": "Successful",
+            "startedAt": "2023-08-30T20:25:21Z",
+            "value": "1"
+          },
+          {
+            "finishedAt": "2023-08-30T20:26:21Z",
+            "phase": "Successful",
+            "startedAt": "2023-08-30T20:26:21Z",
+            "value": "1"
+          },
+          {
+            "finishedAt": "2023-08-30T20:27:21Z",
+            "phase": "Successful",
+            "startedAt": "2023-08-30T20:27:21Z",
+            "value": "1"
+          },
+          {
+            "finishedAt": "2023-08-30T20:28:21Z",
+            "phase": "Successful",
+            "startedAt": "2023-08-30T20:28:21Z",
+            "value": "1"
+          },
+          {
+            "finishedAt": "2023-08-30T20:29:21Z",
+            "phase": "Successful",
+            "startedAt": "2023-08-30T20:29:21Z",
+            "value": "1"
+          },
+          {
+            "finishedAt": "2023-08-30T20:30:21Z",
+            "phase": "Successful",
+            "startedAt": "2023-08-30T20:30:21Z",
+            "value": "1"
+          },
+          {
+            "finishedAt": "2023-08-30T20:31:21Z",
+            "phase": "Successful",
+            "startedAt": "2023-08-30T20:31:21Z",
+            "value": "1"
+          },
+          {
+            "finishedAt": "2023-08-30T20:32:21Z",
+            "phase": "Successful",
+            "startedAt": "2023-08-30T20:32:21Z",
+            "value": "1"
+          },
+          {
+            "finishedAt": "2023-08-30T20:33:21Z",
+            "phase": "Successful",
+            "startedAt": "2023-08-30T20:33:21Z",
+            "value": "1"
+          }
+        ],
+        "name": "latency",
+        "phase": "Running",
+        "successful": 12
+      },
+      {
+        "count": 12,
+        "failed": 1,
+        "measurements": [
+          {
+            "finishedAt": "2023-08-30T20:24:21Z",
+            "phase": "Successful",
+            "startedAt": "2023-08-30T20:24:21Z",
+            "value": "0.7699534502779091"
+          },
+          {
+            "finishedAt": "2023-08-30T20:25:21Z",
+            "phase": "Successful",
+            "startedAt": "2023-08-30T20:25:21Z",
+            "value": "0.8101034722925345"
+          },
+          {
+            "finishedAt": "2023-08-30T20:26:21Z",
+            "phase": "Successful",
+            "startedAt": "2023-08-30T20:26:21Z",
+            "value": "0.8000529689421993"
+          },
+          {
+            "finishedAt": "2023-08-30T20:27:21Z",
+            "phase": "Successful",
+            "startedAt": "2023-08-30T20:27:21Z",
+            "value": "0.7467400222328734"
+          },
+          {
+            "finishedAt": "2023-08-30T20:28:21Z",
+            "phase": "Successful",
+            "startedAt": "2023-08-30T20:28:21Z",
+            "value": "1.0459187234489544"
+          },
+          {
+            "finishedAt": "2023-08-30T20:29:21Z",
+            "phase": "Successful",
+            "startedAt": "2023-08-30T20:29:21Z",
+            "value": "1.036604527178857"
+          },
+          {
+            "finishedAt": "2023-08-30T20:30:21Z",
+            "phase": "Successful",
+            "startedAt": "2023-08-30T20:30:21Z",
+            "value": "1.0087104444802624"
+          },
+          {
+            "finishedAt": "2023-08-30T20:31:21Z",
+            "phase": "Successful",
+            "startedAt": "2023-08-30T20:31:21Z",
+            "value": "1.0901854878092372"
+          },
+          {
+            "finishedAt": "2023-08-30T20:32:21Z",
+            "phase": "Failed",
+            "startedAt": "2023-08-30T20:32:21Z",
+            "value": "1.1060305741797762"
+          },
+          {
+            "finishedAt": "2023-08-30T20:33:21Z",
+            "phase": "Successful",
+            "startedAt": "2023-08-30T20:33:21Z",
+            "value": "1.0919431788459897"
+          }
+        ],
+        "name": "memory",
+        "phase": "Running",
+        "successful": 11
+      }
+    ],
+    "phase": "Running",
+    "runSummary": {
+      "count": 4
+    },
+    "startedAt": "2023-08-30T20:22:21Z"
+  }
+};
 
         ReactDOM.render(window.extensions.resources["argoproj.io/AnalysisRun"].component({ tree: {}, resource: resource }), document.getElementById("root"))
     </script>
